@@ -22,6 +22,14 @@ async def gpt_page(update: Update, context: CallbackContext) -> None:
 
 async def gpt_role_page(update: Update, context: CallbackContext) -> None:
     await common_feathures.delete_old_keyboard(context, update.effective_chat.id)
+    current_subscription = feathures.get_user_subscription(update, context)
+    if current_subscription < datetime.now():
+        await update.effective_chat.send_message(
+            text="У вас закончилась подписка, приобритите подписку для использования этой функции!"
+        )
+        await common_feathures.send_main_menu_main_page(update, context)
+        return states.main_page_action
+
     await feathures.send_gpt_role_page(update, context)
     return states.gpt_select_role
 
@@ -54,14 +62,6 @@ async def gpt_selection_page(update: Update, context: CallbackContext) -> None:
 
 
 async def gpt_role_selection_page(update: Update, context: CallbackContext) -> None:
-    current_subscription = feathures.get_user_subscription(update, context)
-    if current_subscription < datetime.now():
-        await update.effective_chat.send_message(
-            text="У вас закончилась подписка, приобритите подписку для использования этой функции!"
-        )
-        await common_feathures.send_main_menu_main_page(update, context)
-        return states.main_page_action
-
     context.user_data["gpt_role"] = update.callback_query.data
     await feathures.ask_gpt_prompt(update, context)
     return states.gpt_message

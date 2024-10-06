@@ -11,3 +11,4 @@ def add_time_to_subscription(update: Update, context: CallbackContext, time: int
         user = session.query(User).filter_by(tg_id=update.effective_user.id).first()
         user.subscription = user.subscription + timedelta(hours=time)
         session.commit()
+    update.effective_chat.send_message("Подписка успешно продлена!")
