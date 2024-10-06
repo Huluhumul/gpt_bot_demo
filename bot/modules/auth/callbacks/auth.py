@@ -37,6 +37,7 @@ async def share_contact(update: Update, context: CallbackContext) -> int:
         session.commit()
 
     await update.effective_chat.send_message(
-        text="Вы успешно авторизовались в системе! Используйте команду /menu для вызова главного меню"
+        "Вы успешно авторизовались в системе! Используйте команду /menu для вызова главного меню."
+        " Для общения с GPT просто напишите мне сообщение."
     )
     return ConversationHandler.END
