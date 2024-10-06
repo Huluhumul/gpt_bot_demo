@@ -39,10 +39,7 @@ def get_gpt_role_keyboard(context: CallbackContext):
         context.user_data["gpt_role"] = "HR помощник по вакансии"
     keyboard = []
     for i in ["HR помощник по вакансии", "Кинокритик", "Спортсмен", "Поэт"]:
-        if i == context.user_data["gpt_role"]:
-            keyboard.append([InlineKeyboardButton("✅" + i, callback_data=i)])
-        else:
-            keyboard.append([InlineKeyboardButton(i, callback_data=i)])
+        keyboard.append([InlineKeyboardButton(i, callback_data=i)])
     keyboard.append([InlineKeyboardButton("Назад", callback_data="Назад")])
     return InlineKeyboardMarkup(keyboard)
 

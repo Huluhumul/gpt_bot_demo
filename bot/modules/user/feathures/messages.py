@@ -76,10 +76,17 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
         response = requests.post(api_url, headers=headers, json=data)
         if response.status_code == 200:
             data = response.json()
-            await update.effective_chat.send_message(
-                data["result"]["alternatives"][0]["message"]["text"]
-            )
-            return
+            try:
+                await update.effective_chat.send_message(
+                    data["result"]["alternatives"][0]["message"]["text"],
+                    parse_mode="MarkdownV2",
+                )
+                return
+            except Exception:
+                await update.effective_chat.send_message(
+                    data["result"]["alternatives"][0]["message"]["text"],
+                )
+                return
         else:
             print(response.text)
     except requests.exceptions.RequestException as e:
