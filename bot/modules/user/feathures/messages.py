@@ -68,7 +68,7 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
             },
             {
                 "role": "user",
-                "text": update.message.text,
+                "text": f"{update.message.text}\nОтвет пиши в формате MarkdownV2",
             },
         ],
     }
