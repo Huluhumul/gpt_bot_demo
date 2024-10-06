@@ -68,7 +68,7 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
             },
             {
                 "role": "user",
-                "text": f"{update.message.text}\n Не используй особое форматирование в тексте",
+                "text": f"{update.message.text}\n Не используй особое форматирование в тексте, не используй специальные символы для форматирования текста",
             },
         ],
     }
