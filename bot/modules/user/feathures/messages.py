@@ -68,7 +68,7 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
             },
             {
                 "role": "user",
-                "text": f"{update.message.text}\nОтвет пиши в формате MarkdownV2",
+                "text": f"{update.message.text}\nФорматируй текст с помощью HTML",
             },
         ],
     }
@@ -79,7 +79,7 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
             try:
                 await update.effective_chat.send_message(
                     data["result"]["alternatives"][0]["message"]["text"],
-                    parse_mode="MarkdownV2",
+                    parse_mode="HTML",
                 )
                 return
             except Exception:
