@@ -68,7 +68,7 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
             },
             {
                 "role": "user",
-                "text": f"{update.message.text}\nФорматируй текст в markdown v2 формате",
+                "text": f"{update.message.text}\n Не используй особое форматирование в тексте",
             },
         ],
     }
@@ -76,19 +76,10 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
         response = requests.post(api_url, headers=headers, json=data)
         if response.status_code == 200:
             data = response.json()
-            try:
-                await update.effective_chat.send_message(
-                    data["result"]["alternatives"][0]["message"]["text"],
-                    parse_mode=constants.ParseMode.MARKDOWN_V2,
-                )
-                return
-            except Exception as e:
-                print(e)
-                print(data["result"]["alternatives"][0]["message"]["text"])
-                await update.effective_chat.send_message(
-                    data["result"]["alternatives"][0]["message"]["text"],
-                )
-                return
+            await update.effective_chat.send_message(
+                data["result"]["alternatives"][0]["message"]["text"],
+            )
+            return
         else:
             print(response.text)
     except requests.exceptions.RequestException as e:
