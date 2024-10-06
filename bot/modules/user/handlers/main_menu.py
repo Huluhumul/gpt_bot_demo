@@ -19,7 +19,7 @@ main_menu_handler = ConversationHandler(
         ],
         states.subscription_action: [
             CallbackQueryHandler(callbacks.back_to_main_page, pattern=r"Назад"),
-            CallbackQueryHandler(callbacks, pattern=r"Получить 5ч подписки"),
+            CallbackQueryHandler(callbacks.add_subscription, pattern=r"Получить 5ч подписки"),
         ],
         states.gpt_action: [
             CallbackQueryHandler(callbacks.back_to_main_page, pattern=r"Назад"),
@@ -37,4 +37,3 @@ main_menu_handler = ConversationHandler(
     fallbacks=[],
     allow_reentry=True,
 )
-

@@ -7,5 +7,6 @@ from .main_menu import (
     gpt_selection_page,
     gpt_role_page,
     gpt_role_selection_page,
-    gpt_answer_page
+    gpt_answer_page,
+    add_subscription
 )
