@@ -82,7 +82,8 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
                     parse_mode="HTML",
                 )
                 return
-            except Exception:
+            except Exception as e:
+                print(e)
                 await update.effective_chat.send_message(
                     data["result"]["alternatives"][0]["message"]["text"],
                 )
