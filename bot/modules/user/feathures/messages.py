@@ -77,7 +77,7 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
         if response.status_code == 200:
             data = response.json()
             await update.effective_chat.send_message(
-                data["result"]["alternatives"][0]["message"]["text"],
+                data["result"]["alternatives"][0]["message"]["text"].replace("*", ""),
             )
             return
         else:
