@@ -15,7 +15,7 @@ async def send_main_menu_subscription_page(
 
         context.user_data["old_keyboard_msg"] = (
             await update.effective_chat.send_message(
-                text=f"Дней до окончания подписки: {user.subscription}",
+                text=f"Дата и время окончания подписки: {user.subscription.strftime('%d.%m.%Y %H:%M')}",
                 reply_markup=keyboards.get_subscriptions_keyboard(),
             )
         )
