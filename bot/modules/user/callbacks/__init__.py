@@ -6,5 +6,6 @@ from .main_menu import (
     back_to_main_page,
     gpt_selection_page,
     gpt_role_page,
-    gpt_role_selection_page
+    gpt_role_selection_page,
+    gpt_answer_page
 )

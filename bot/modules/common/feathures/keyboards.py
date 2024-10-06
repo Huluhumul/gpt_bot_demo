@@ -17,7 +17,7 @@ async def delete_old_keyboard(context, chat_id):
 def get_main_menu_keyboard():
     return InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("Выбор GPT", callback_data="Выбор GPT")],
+            # [InlineKeyboardButton("Выбор GPT", callback_data="Выбор GPT")],
             [InlineKeyboardButton("Выбор роли GPT", callback_data="Выбор роли GPT")],
             [InlineKeyboardButton("Подписка", callback_data="Подписка")],
         ]

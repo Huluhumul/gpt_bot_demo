@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import create_engine
 from sqlalchemy import (
     Column,
@@ -28,7 +30,7 @@ class User(base):
     username = Column(String(length=50))
     tg_id = Column(BigInteger, unique=True)
     phone = Column(String(length=17))
-    subscription = Column(Integer, default=0)
+    subscription = Column(DateTime, default=datetime.now())
 
 
 engine = create_engine(URL(**config.db_connect_data, query={}))

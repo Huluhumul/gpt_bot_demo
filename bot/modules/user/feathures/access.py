@@ -16,3 +16,9 @@ def access_decorator(func):
                 )
 
     return inner
+
+
+def get_user_subscription(update: Update, context: CallbackContext) -> bool:
+    with session_maker() as session:
+        user = session.query(User).filter_by(tg_id=update.effective_user.id).first()
+        return user.subscription

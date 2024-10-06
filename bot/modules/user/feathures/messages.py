@@ -3,11 +3,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 import config
-from .keyboards import (
-    get_subscriptions_keyboard,
-    get_gpts_keyboard,
-    get_gpt_role_keyboard,
-)
+from . import keyboards
 from src.database import session_maker, User
 
 
@@ -20,7 +16,7 @@ async def send_main_menu_subscription_page(
         context.user_data["old_keyboard_msg"] = (
             await update.effective_chat.send_message(
                 text=f"Дней до окончания подписки: {user.subscription}",
-                reply_markup=get_subscriptions_keyboard(),
+                reply_markup=keyboards.get_subscriptions_keyboard(),
             )
         )
 
@@ -28,28 +24,28 @@ async def send_main_menu_subscription_page(
 async def send_gpt_page(update: Update, context: CallbackContext) -> None:
     context.user_data["old_keyboard_msg"] = await update.effective_chat.send_message(
         text="Выберите модель для взаимодействия",
-        reply_markup=get_gpts_keyboard(context),
+        reply_markup=keyboards.get_gpts_keyboard(context),
     )
 
 
 async def send_gpt_role_page(update: Update, context: CallbackContext) -> None:
     context.user_data["old_keyboard_msg"] = await update.effective_chat.send_message(
         text="Выберите роль для GPT",
-        reply_markup=get_gpt_role_keyboard(context),
+        reply_markup=keyboards.get_gpt_role_keyboard(context),
     )
 
 
-async def edit_gpt_page(update: Update, context: CallbackContext) -> None:
+async def ask_gpt_prompt(update: Update, context: CallbackContext) -> None:
     await update.effective_message.edit_text(
-        text="Выберите модель для взаимодействия",
-        reply_markup=get_gpts_keyboard(context),
+        text="Задайте интересующий вас вопрос к gpt",
+        reply_markup=keyboards.get_back_keyboard(),
     )
 
 
 async def edit_gpt_role_page(update: Update, context: CallbackContext) -> None:
     await update.effective_message.edit_text(
         text="Выберите модель для взаимодействия",
-        reply_markup=get_gpt_role_keyboard(context),
+        reply_markup=keyboards.get_gpt_role_keyboard(context),
     )
 
 
