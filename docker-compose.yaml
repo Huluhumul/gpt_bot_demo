@@ -1,0 +1,29 @@
+version: '3'
+
+name: gpt_bot_demo_chatbot
+services:
+
+  gpt_bot_demo_db:
+    image: postgres
+    restart: always
+    container_name: ${POSTGRES_HOST}
+    env_file:
+      - .env
+    volumes:
+      - /opt/gpt_bot_demo_postgres:/var/lib/postgresql
+
+  gpt_bot_demo_bot:
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+    image: gpt_bot_demo_bot
+    container_name: gpt_bot_demo_bot
+    links:
+      - gpt_bot_demo_db
+    env_file:
+      - .env
+    volumes:
+      - ${LOGS_PATH}:${LOGS_PATH}
+    restart: always
+    tty: True
+    working_dir: /bot

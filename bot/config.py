@@ -12,4 +12,6 @@ db_connect_data = {
     "database": getenv("POSTGRES_DB"),
 }
 
-token = getenv("TELEGRAM_TOKEN")
+token = getenv("TOKEN")
+gpt_token = getenv("GPT_API_KEY")
+gpt_folder_id = "b1gum0tmqptetta039k2"
