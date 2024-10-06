@@ -42,7 +42,7 @@ async def subscription_page(update: Update, context: CallbackContext) -> None:
 
 async def add_subscription(update: Update, context: CallbackContext) -> None:
     await common_feathures.delete_old_keyboard(context, update.effective_chat.id)
-    feathures.add_time_to_subscription(update, context, 5)
+    await feathures.add_time_to_subscription(update, context, 5)
     await common_feathures.send_main_menu_main_page(update, context)
     return states.main_page_action
 

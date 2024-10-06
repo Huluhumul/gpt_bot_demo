@@ -6,9 +6,11 @@ from telegram.ext import CallbackContext
 from src.database import session_maker, User
 
 
-def add_time_to_subscription(update: Update, context: CallbackContext, time: int) -> None:
+async def add_time_to_subscription(
+    update: Update, context: CallbackContext, time: int
+) -> None:
     with session_maker() as session:
         user = session.query(User).filter_by(tg_id=update.effective_user.id).first()
         user.subscription = user.subscription + timedelta(hours=time)
         session.commit()
-    update.effective_chat.send_message("Подписка успешно продлена!")
+    await update.effective_chat.send_message("Подписка успешно продлена!")
