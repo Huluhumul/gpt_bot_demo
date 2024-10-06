@@ -51,9 +51,7 @@ async def edit_gpt_role_page(update: Update, context: CallbackContext) -> None:
 
 async def gpt_answer(update: Update, context: CallbackContext) -> None:
     if not context.user_data.get("gpt_role"):
-        context.user_data["gpt_role"] = (
-            "Собеседник (Парень)"
-        )
+        context.user_data["gpt_role"] = "HR помощник по вакансии"
     api_url = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
     headers = {
         "Authorization": f"Bearer {config.gpt_token}",
@@ -64,7 +62,10 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
         "modelUri": f"gpt://{config.gpt_folder_id}/yandexgpt-lite",
         "completionOptions": {"stream": False, "temperature": 0.6, "maxTokens": "200"},
         "messages": [
-            {"role": "system", "text": context.user_data["gpt_role"]},
+            {
+                "role": "system",
+                "text": f"Ты: {context.user_data['gpt_role']}, в диалоге веди себя как {context.user_data['gpt_role']}",
+            },
             {
                 "role": "user",
                 "text": update.message.text,
@@ -76,7 +77,8 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
         if response.status_code == 200:
             data = response.json()
             await update.effective_chat.send_message(
-                data["result"]["alternatives"][0]["message"]["text"]
+                data["result"]["alternatives"][0]["message"]["text"],
+                parse_mode="MarkdownV2",
             )
             return
         else:
