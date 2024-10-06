@@ -1,5 +1,5 @@
 import requests
-from telegram import Update
+from telegram import Update, constants
 from telegram.ext import CallbackContext
 
 import config
@@ -68,7 +68,7 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
             },
             {
                 "role": "user",
-                "text": f"{update.message.text}\nФорматируй текст с помощью HTML",
+                "text": f"{update.message.text}\nФорматируй текст в markdown v2 формате",
             },
         ],
     }
@@ -79,11 +79,12 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
             try:
                 await update.effective_chat.send_message(
                     data["result"]["alternatives"][0]["message"]["text"],
-                    parse_mode="HTML",
+                    parse_mode=constants.ParseMode.MARKDOWN_V2,
                 )
                 return
             except Exception as e:
                 print(e)
+                print(data["result"]["alternatives"][0]["message"]["text"])
                 await update.effective_chat.send_message(
                     data["result"]["alternatives"][0]["message"]["text"],
                 )
