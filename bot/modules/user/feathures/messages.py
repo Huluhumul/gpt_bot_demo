@@ -1,9 +1,10 @@
 import requests
 from telegram import Update, constants
 from telegram.ext import CallbackContext
+from loguru import logger
 
 import config
-from . import keyboards
+from . import keyboards, gpt
 from src.database import session_maker, User
 
 
@@ -74,16 +75,32 @@ async def gpt_answer(update: Update, context: CallbackContext) -> None:
     }
     try:
         response = requests.post(api_url, headers=headers, json=data)
-        if response.status_code == 200:
-            data = response.json()
+    except Exception as e:
+        logger.exception(f"Возникла ошибка: {e}")
+        await update.effective_chat.send_message(
+            "Не удалось сгенерировать ответ, попробуйте позже"
+        )
+        return
+
+    if response.status_code == 401:
+        gpt.refresh_token()
+        headers["Authorization"] = f"Bearer {config.gpt_token}"
+        try:
+            response = requests.post(api_url, headers=headers, json=data)
+        except Exception as e:
+            logger.exception(f"Возникла ошибка: {e}")
             await update.effective_chat.send_message(
-                data["result"]["alternatives"][0]["message"]["text"].replace("*", ""),
+                "Не удалось сгенерировать ответ, попробуйте позже"
             )
             return
-        else:
-            print(response.text)
-    except requests.exceptions.RequestException as e:
-        print(f"Возникла ошибка: {e}")
-    await update.effective_chat.send_message(
-        "Не удалось сгенерировать ответ, попробуйте позже"
-    )
+
+    if response.status_code == 200:
+        data = response.json()
+        await update.effective_chat.send_message(
+            data["result"]["alternatives"][0]["message"]["text"].replace("*", ""),
+        )
+    else:
+        logger.error(f"status code != 200. Response: {response.text}")
+        await update.effective_chat.send_message(
+            "Не удалось сгенерировать ответ, попробуйте позже"
+        )

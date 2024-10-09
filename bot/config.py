@@ -14,4 +14,5 @@ db_connect_data = {
 
 token = getenv("TOKEN")
 gpt_token = getenv("GPT_API_KEY")
+gpt_refresh_token = getenv("GPT_REFRESH_TOKEN")
 gpt_folder_id = "b1gum0tmqptetta039k2"
