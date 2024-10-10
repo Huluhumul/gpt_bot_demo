@@ -1,3 +1,5 @@
+import json
+
 import requests
 from loguru import logger
 
@@ -5,15 +7,14 @@ import config
 
 
 def refresh_token() -> None:
-    api_url = "https://iam.api.cloud.yandex.net/iam/v1/tokens"
-    headers = {
-        "Content-Type": "Application/json",
-    }
-    data = {
-        "yandexPassportOauthToken": config.gpt_refresh_token,
-    }
+    url = "https://iam.api.cloud.yandex.net/iam/v1/tokens"
+
+    # Подготовка тела запроса в формате JSON
+    body = json.dumps({"yandexPassportOauthToken": config.gpt_refresh_token})
+
+    headers = {"Content-Type": "application/json"}
     try:
-        response = requests.post(api_url, headers=headers, data=data)
+        response = requests.post(url, data=body, headers=headers)
     except Exception as e:
         logger.exception(f"Ошибка при обновлении токена: {e}")
 
